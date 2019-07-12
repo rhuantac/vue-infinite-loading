@@ -185,6 +185,9 @@ export default {
 
       // force re-complation computed properties to fix the problem of get slot text delay
       this.$nextTick(() => {
+        if (this.direction === 'top') {
+          scrollBarStorage.restore(this.scrollParent);
+        }
         this.$forceUpdate();
       });
 
