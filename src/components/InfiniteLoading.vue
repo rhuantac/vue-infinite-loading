@@ -162,6 +162,7 @@ export default {
     }, 1);
 
     this.$on('$InfiniteLoading:loaded', (ev) => {
+      if (ev.identifier !== this.identifier) return;
       this.isFirstLoad = false;
 
       if (this.direction === 'top') {
@@ -181,6 +182,7 @@ export default {
     });
 
     this.$on('$InfiniteLoading:complete', (ev) => {
+      if (ev.identifier !== this.identifier) return;
       this.status = STATUS.COMPLETE;
 
       // force re-complation computed properties to fix the problem of get slot text delay
@@ -219,11 +221,11 @@ export default {
      * change state for this component, pass to the callback
      */
     this.stateChanger = {
-      loaded: () => {
-        this.$emit('$InfiniteLoading:loaded', { target: this });
+      loaded: (identifier) => {
+        this.$emit('$InfiniteLoading:loaded', { target: this, identifier });
       },
-      complete: () => {
-        this.$emit('$InfiniteLoading:complete', { target: this });
+      complete: (identifier) => {
+        this.$emit('$InfiniteLoading:complete', { target: this, identifier });
       },
       reset: () => {
         this.$emit('$InfiniteLoading:reset', { target: this });
